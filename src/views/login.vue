@@ -1,140 +1,143 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <div class="sm:mx-auto sm:w-full sm:max-w-md mb-6">
-          <h2 class="text-center text-3xl font-extrabold text-gray-900">
-            Connexion
-          </h2>
-          <p class="mt-2 text-center text-sm text-gray-600">
-            Connectez-vous à votre compte
-          </p>
+  <AuthLayout>
+    <div
+      class="bg-white border border-gray-200 rounded-2xl shadow-sm px-8 py-10 w-full max-w-md mx-auto"
+    >
+      <!-- En-tête avec logo et titre -->
+      <div class="flex flex-col items-center mb-8 gap-4">
+        <AppLogo />
+        <h1 class="text-2xl font-semibold text-gray-900">Connexion</h1>
+      </div>
+
+      <!-- Formulaire de connexion -->
+      <div class="mb-6">
+        <v-form @submit.prevent="handleSubmit" class="flex flex-col gap-5">
+          <v-text-field
+            v-model="formData.email"
+            label="Adresse email"
+            type="email"
+            autocomplete="email"
+            prepend-inner-icon="mdi-email"
+            required
+            density="comfortable"
+            class="flat-input"
+            placeholder="Entrez votre adresse email"
+            variant="solo"
+            color="primary"
+          />
+          <v-text-field
+            v-model="formData.password"
+            label="Mot de passe"
+            type="password"
+            autocomplete="current-password"
+            prepend-inner-icon="mdi-lock"
+            required
+            density="comfortable"
+            class="flat-input"
+            placeholder="Entrez votre mot de passe"
+            variant="solo"
+            color="primary"
+          />
+          <div class="flex justify-end mb-2">
+            <v-btn
+              variant="text"
+              size="small"
+              color="primary"
+              class="px-0 text-sm"
+              @click="onForgotPassword"
+            >
+              Mot de passe oublié ?
+            </v-btn>
+          </div>
+          <v-btn
+            type="submit"
+            color="primary"
+            block
+            size="large"
+            variant="flat"
+            class="rounded-xl font-medium text-base py-4 mt-2"
+          >
+            <span class="normal-case"> Se connecter </span>
+          </v-btn>
+        </v-form>
+      </div>
+
+      <!-- Séparateur -->
+      <div class="relative my-8">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-200"></div>
         </div>
-
-        <form class="space-y-6" @submit.prevent="handleSubmit">
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">
-              Email / Nom d'utilisateur
-            </label>
-            <div class="mt-1">
-              <input
-                id="email"
-                v-model="formData.email"
-                name="email"
-                type="text"
-                autocomplete="email"
-                required
-                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Entrez votre email ou nom d'utilisateur"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">
-              Mot de passe
-            </label>
-            <div class="mt-1">
-              <input
-                id="password"
-                v-model="formData.password"
-                name="password"
-                type="password"
-                autocomplete="current-password"
-                required
-                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Entrez votre mot de passe"
-              />
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input
-                id="remember-me"
-                v-model="formData.rememberMe"
-                name="remember-me"
-                type="checkbox"
-                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                Se souvenir de moi
-              </label>
-            </div>
-
-            <div class="text-sm">
-              <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                Mot de passe oublié ?
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
-            >
-              Se connecter
-            </button>
-          </div>
-        </form>
-
-        <div class="mt-6">
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-300" />
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">Pas encore de compte ?</span>
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <router-link
-              to="/register"
-              class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition duration-150 ease-in-out"
-            >
-              Créer un compte
-            </router-link>
-          </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="bg-white px-4 text-gray-500">ou</span>
         </div>
       </div>
+
+      <!-- Section création de compte -->
+      <div class="text-center">
+        <p class="text-gray-600 text-sm mb-4">Pas encore de compte ?</p>
+        <router-link to="/register">
+          <v-btn
+            variant="outlined"
+            color="primary"
+            class="w-full rounded-xl border-2"
+            size="large"
+          >
+            <span class="normal-case"> Créer un compte </span>
+          </v-btn>
+        </router-link>
+      </div>
     </div>
-  </div>
+  </AuthLayout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import AppLogo from "@/components/Logo.vue";
+import AuthLayout from "@/layouts/AuthLayout.vue";
 
-const router = useRouter()
+defineOptions({
+  name: "LoginPage",
+});
 
-// Données du formulaire
+const router = useRouter();
+
 const formData = ref({
-  email: '',
-  password: '',
-  rememberMe: false
-})
+  email: "",
+  password: "",
+});
 
-// Fonction de soumission du formulaire
+const onForgotPassword = () => {
+  alert("Lien de récupération de mot de passe (à implémenter)");
+};
+
 const handleSubmit = () => {
-  // Validation basique
   if (!formData.value.email || !formData.value.password) {
-    alert('Veuillez remplir tous les champs obligatoires')
-    return
+    alert("Veuillez remplir tous les champs obligatoires");
+    return;
   }
-
-  // Ici vous ajouterez la logique d'authentification
-  console.log('Données de connexion:', formData.value)
-  
-  // Simulation d'une connexion réussie
-  alert('Connexion réussie ! (simulation)')
-  
-  // Redirection vers la page d'accueil
-  router.push('/')
-}
+  console.log("Données de connexion:", formData.value);
+  alert("Connexion réussie ! (simulation)");
+  router.push("/");
+};
 </script>
 
 <style scoped>
-/* Styles spécifiques si nécessaire */
+.flat-input .v-input__control {
+  box-shadow: none !important;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+.flat-input .v-input__control:hover {
+  border-color: #cbd5e1;
+}
+.flat-input .v-input__control:focus-within {
+  border-color: #3b82f6;
+  background: #ffffff;
+}
+.flat-input .v-field__outline {
+  border: none !important;
+}
 </style>

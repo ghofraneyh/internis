@@ -1,11 +1,11 @@
-import './assets/main.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createVuetify } from 'vuetify'
 import 'vuetify/styles'
 // Optionnel : importer les icônes Material Design
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import '@mdi/font/css/materialdesignicons.css'
+// Import Tailwind après Vuetify pour avoir la priorité
+import './assets/main.css'
 
 import App from './App.vue'
 import router from './router'
@@ -18,8 +18,7 @@ app.use(router)
 const vuetify = createVuetify({
   icons: {
     defaultSet: 'mdi',
-    aliases,
-    sets: { mdi },
+
   },
 })
 
