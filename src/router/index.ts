@@ -21,26 +21,37 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
       meta: { requiresAuth: true }
     },
-    // Redirection par défaut
+    {
+      path: '/missions',
+      name: 'Missions',
+      component: () => import('../views/Missions.vue'),
+      meta: { requiresAuth: true }
+    },
+    // Redirection par défaut (DOIT ÊTRE EN DERNIER)
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/'
-    }
+      redirect: '/dashboard'
+    },
   ],
 })
 
 // Guard de navigation pour l'authentification
 router.beforeEach(async (to, from, next) => {
+  console.log('Navigation vers:', to.path, 'Nom de route:', to.name)
+  
   // Vérifier si la route nécessite une authentification
   if (to.meta.requiresAuth) {
+    console.log('Route nécessite une authentification')
     // Importer le composable d'authentification
     const { useAuth } = await import('../composables/useAuth')
     const { getCurrentUser } = useAuth()
     
     // Vérifier si l'utilisateur est connecté
     const user = await getCurrentUser()
+    console.log('Utilisateur:', user ? 'connecté' : 'non connecté')
     
     if (!user) {
+      console.log('Redirection vers /login')
       // Rediriger vers la page de connexion si non connecté
       next('/login')
       return
@@ -49,6 +60,7 @@ router.beforeEach(async (to, from, next) => {
   
   // Si l'utilisateur est connecté et visite la page d'accueil, rediriger vers le dashboard
   if (to.path === '/' || to.path === '/home') {
+    console.log('Redirection depuis home vers dashboard')
     const { useAuth } = await import('../composables/useAuth')
     const { getCurrentUser } = useAuth()
     const user = await getCurrentUser()
@@ -59,6 +71,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   
+  console.log('Navigation autorisée vers:', to.path)
   next()
 })
 
